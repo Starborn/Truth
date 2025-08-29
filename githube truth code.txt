@@ -1,0 +1,76 @@
+python
+# Prototype computational model of truth reflecting multiple theories
+
+# Sample factual database for Correspondence Theory
+FACTS_DB = {
+    "snow is white": True,
+    "fire is cold": False,
+    "water is wet": True,
+}
+
+# Sample belief system for Coherence Theory (set of accepted propositions)
+BELIEF_SYSTEM = {
+    "snow is white",
+    "water is wet",
+    "ice is cold",
+}
+
+# Pragmatic contexts linking propositions to utility effectiveness
+PRAGMATIC_CONTEXTS = {
+    "snow is white": 0.9,  # High utility in practical contexts
+    "fire is cold": 0.0,
+    "water is wet": 0.8,
+}
+
+# Semantic model - logical interpretation mapping propositions to truth values
+SEMANTIC_MODEL = {
+    "snow is white": True,
+    "fire is cold": False,
+    "water is wet": True,
+}
+
+def correspondence_truth(proposition):
+    """Check truth by correspondence with fact database."""
+    return FACTS_DB.get(proposition, None)
+
+def coherence_truth(proposition, belief_system):
+    """Evaluate coherence by checking membership in belief system."""
+    # Simple coherence: 1 if proposition coheres (in belief set), 0 if contradicts
+    if proposition in belief_system:
+        return 1.0
+    else:
+        # We could extend to check logical contradiction but simplified here
+        return 0.0
+
+def pragmatic_truth(proposition, pragmatic_contexts):
+    """Evaluate pragmatic truth by utility score in context (0 to 1)."""
+    return pragmatic_contexts.get(proposition, 0.0)
+
+def deflationary_truth(proposition):
+    """Truth as simple affirmation (pass-through)."""
+    # Here truth of proposition is just its acceptance; for demo always True
+    return True
+
+def semantic_truth(proposition, semantic_model):
+    """Semantic truth via model satisfaction."""
+    return semantic_model.get(proposition, None)
+
+def evaluate_truth(proposition):
+    """Evaluate truth via multiple theories."""
+    results = {}
+    results["Correspondence"] = correspondence_truth(proposition)
+    results["Coherence"] = coherence_truth(proposition, BELIEF_SYSTEM)
+    results["Pragmatic"] = pragmatic_truth(proposition, PRAGMATIC_CONTEXTS)
+    results["Deflationary"] = deflationary_truth(proposition)
+    results["Semantic"] = semantic_truth(proposition, SEMANTIC_MODEL)
+    return results
+
+# Demo evaluation
+propositions = ["snow is white", "fire is cold", "water is wet", "ice is cold"]
+for p in propositions:
+    truth_profile = evaluate_truth(p)
+    print(f"Truth evaluation for: '{p}'")
+    for theory, value in truth_profile.items():
+        print(f"  {theory} Theory: {value}")
+    print("\n")
+
